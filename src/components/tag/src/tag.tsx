@@ -4,21 +4,28 @@ import * as React from 'react';
 import './tag.css';
 
 export interface ITagProps {
-    color?: string;
     /** 标签是否可以关闭 */
     closable?: boolean;
     type?: string;
     style?: React.CSSProperties;
     size?: string;
+    /** 关闭时的回调 */
+    onClose?: (arg1?: string) => void;
+    tagKey?: string;
 }
 
-export default class Tag extends React.Component<ITagProps, {}> {
+export interface ITagStates {
+    closing: boolean;
+}
+
+export default class Tag extends React.Component<ITagProps, ITagStates> {
     public static defaultProps = {
         closable: false,
     }
     constructor(props: ITagProps) {
         super(props);
         this.state = {
+            closing: false
         }
     }
 
@@ -32,29 +39,37 @@ export default class Tag extends React.Component<ITagProps, {}> {
         return /(medium|small|mini)/gi.test(size)
     }
 
+    public handleIconClick = () => {
+        const onClose = this.props.onClose;
+        if (onClose) {
+            this.setState({
+                closing: true
+            });
+            setTimeout(() => {
+                onClose(this.props.tagKey);
+            }, 200)
+        }
+    }
+
     public render() {
         const { type, style, size, children, closable } = this.props;
         const isPresetType = this.isPresetType(type);
         const isPresetSize = this.isPresetSize(size);
         const closeIcon = closable ?
             <i className="rc_el_tag_close rc_el_tag_icon_close"
-            // onClick={this.handleIconClick} 
+                onClick={this.handleIconClick}
             />
             : '';
         const classString = classNames('rc_el_tag', {
             [`rc_el_tag_${type}`]: isPresetType,
             [`rc_el_tag_${size}`]: isPresetSize,
-            // [`${prefixCls}-close`]: this.state.closing,
-            'test': true,
+            'rc_el_tag_closed': this.state.closing,
         });
         const tagStyle = {
             ...style
         }
         return (
             <span className={classString} style={tagStyle}>
-                {/* <i class="el-tag__close el-icon-close"
-                v-if="closable"
-                @click.stop="handleClose"></i> */}
                 {children || 'tag'}
                 {closeIcon}
             </span>

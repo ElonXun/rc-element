@@ -10,6 +10,13 @@
     box-sizing: border-box;
     border: 1px solid rgba(64, 158, 255, .2);
     white-space: nowrap;
+    opacity: 1;
+    transition: all .3s cubic-bezier(.55, 0, .1, 1);
+}
+
+.rc_el_tag_closed {
+    opacity: 0;
+    transform: scaleX(0);
 }
 
 .rc_el_tag_success {
@@ -78,8 +85,8 @@
 
 [class*=" rc_el_tag_icon_"],
 [class^=rc_el_tag_icon_] {
-    /* font-family: element-icons !important; */
-    speak: none;
+    font-family: sans-serif;
+    /* speak: none; */
     font-style: normal;
     font-weight: 400;
     font-variant: normal;

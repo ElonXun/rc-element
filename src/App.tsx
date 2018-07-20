@@ -2,7 +2,38 @@ import * as React from 'react';
 import './App.css';
 import Tag from './components/tag/index';
 
-class App extends React.Component {
+export interface IAppState {
+  tagLists: any[];
+}
+class App extends React.Component<{}, IAppState> {
+
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      tagLists: ['标签一', '标签二', '标签三', '标签四', '标签五']
+    }
+  }
+
+  public handleClose = (tag: string) => {
+    console.log('当前要关闭的tag名称', tag);
+    let arr = this.state.tagLists;
+    arr = arr.filter((item, index) => {
+      return item !== tag
+    })
+    console.log("now", arr)
+    this.setState({
+      tagLists: arr
+    })
+  }
+
+  public addNewHandler = () => {
+    const arr = this.state.tagLists;
+    arr.push("new tag");
+    this.setState({
+      tagLists: arr
+    })
+  }
+
   public render() {
     return (
       <div className="App">
@@ -22,6 +53,19 @@ class App extends React.Component {
         <Tag type="info" closable={true} />
         <Tag type="warning" closable={true} />
         <Tag type="danger" closable={true} />
+        <br />
+        {this.state.tagLists.map((item, index) => {
+          return (
+            <Tag type="default"
+              closable={true}
+              onClose={this.handleClose}
+              key={item}
+              tagKey={item}>
+              {item}
+            </Tag>
+          )
+        })}
+        <button onClick={this.addNewHandler}>addNew</button>
       </div>
     );
   }
