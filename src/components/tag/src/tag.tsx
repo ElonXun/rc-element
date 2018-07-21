@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+// import Animate from 'rc-animate';
 // import PropTypes from 'prop-types';
 import './tag.css';
 
@@ -47,7 +49,7 @@ export default class Tag extends React.Component<ITagProps, ITagStates> {
             });
             setTimeout(() => {
                 onClose(this.props.tagKey);
-            }, 200)
+            }, 300)
         }
     }
 
@@ -68,11 +70,21 @@ export default class Tag extends React.Component<ITagProps, ITagStates> {
         const tagStyle = {
             ...style
         }
+
+
+        const tag = <span className={classString} style={tagStyle}>
+            {children || 'tag'}
+            {closeIcon}
+        </span>
         return (
-            <span className={classString} style={tagStyle}>
-                {children || 'tag'}
-                {closeIcon}
-            </span>
+            <ReactCSSTransitionGroup
+                transitionName="rc_el_tag_zoom"
+                transitionAppear={true}
+                transitionEnter={false}
+                transitionLeave={false}
+                transitionAppearTimeout={300}>
+                {tag}
+            </ReactCSSTransitionGroup>
         )
     }
 }
