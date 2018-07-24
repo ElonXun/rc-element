@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TagDemo from '../src/components/tag/demo/tagDemo';
+import ProgressDemo from '../src/components/progress/demo/progressDemo';
 import './App.css';
 
 export interface IAppState {
@@ -16,7 +16,7 @@ class App extends React.Component<{}, IAppState> {
 
   public render() {
     return (
-      <TagDemo />
+      <ProgressDemo />
     );
   }
 }
