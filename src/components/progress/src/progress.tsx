@@ -1,5 +1,5 @@
+import classNames from 'classnames';
 import * as React from 'react';
-// import classNames from 'classnames';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 // import Animate from 'rc-animate';
 // import PropTypes from 'prop-types';
@@ -22,9 +22,9 @@ export interface ITagStates {
 }
 
 export default class Tag extends React.Component<IProgressProps, {}> {
-    // public static defaultProps = {
-    //     closable: false,
-    // }
+    public static defaultProps = {
+        type: 'line' as ProgressType,
+    }
     constructor(props: IProgressProps) {
         super(props);
         this.state = {
@@ -43,11 +43,39 @@ export default class Tag extends React.Component<IProgressProps, {}> {
     // }
 
     public render() {
-        // const { } = this.props;
-        // let progress;
+        const { type } = this.props;
+        let progress;
+        if (type === 'line') {
+            const percentStyle = {
+                height: '8px',
+                width: '30%',
+                // background: strokeColor,
+            };
+            progress = (
+                <div>
+                    <div className={`rc-el-progress`}>
+                        <div className={`rc-el-progress-inner`}>
+                            <div className={`rc-el-progress-bg`} style={percentStyle} />
+                            {/* {successSegment} */}
+                        </div>
+                    </div>
+                    {/* {progressInfo} */}
+                </div>
+            );
+        }
+
+        const classString = classNames({
+            [`rc-el-progress - ${type === 'dashboard' && 'circle' || type}`]: true,
+            // [`${prefixCls}-${type === 'dashboard' && 'circle' || type}`]: true,
+            // [`${prefixCls}-status-${progressStatus}`]: true,
+            // [`${prefixCls}-show-info`]: showInfo,
+            // [`${prefixCls}-${size}`]: size,
+        });
 
         return (
-            <p>this is progress</p>
+            <div className={classString}>
+                {progress}
+            </div>
         )
     }
 }
