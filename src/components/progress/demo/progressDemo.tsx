@@ -16,7 +16,14 @@ class TagDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div className="App">
-                <Progress />
+                <div style={{ width: '500px' }}>
+                    <Progress />
+                    <Progress percentage={0} />
+                    <Progress percentage={70} />
+                    <Progress percentage={80} color="#8e71c7" />
+                    <Progress percentage={100} status="success" />
+                    <Progress percentage={50} status="exception" />
+                </div>
             </div>
         );
     }

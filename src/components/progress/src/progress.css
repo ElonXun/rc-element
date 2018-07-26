@@ -1,0 +1,109 @@
+/* .rc-el-progress {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, .65);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+} */
+
+div.rc-el-progress-circle,
+div.rc-el-progress-line {
+    /* margin-right: 8px; */
+    margin-bottom: 8px;
+}
+
+.rc-el-progress-line {
+    width: 100%;
+    font-size: 14px;
+    position: relative;
+}
+
+.rc-el-progress-outer {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.rc-el-progress-show-info .rc-el-progress-outer {
+    padding-right: calc(2em + 8px);
+    margin-right: calc(-2em - 8px);
+}
+
+.rc-el-progress-inner {
+    display: inline-block;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-radius: 100px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.rc-el-progress-bg,
+.rc-el-progress-success-bg {
+    border-radius: 100px;
+    background-color: #409eff;
+    transition: all .4s cubic-bezier(.08, .82, .17, 1) 0s;
+    position: relative;
+}
+
+.rc-el-progress-text {
+    word-break: normal;
+    width: 2em;
+    text-align: left;
+    font-size: 1em;
+    margin-left: 8px;
+    vertical-align: middle;
+    display: inline-block;
+    color: rgba(0, 0, 0, .45);
+    line-height: 1;
+}
+
+[class*=" rc-el-icon-progress"],
+[class^=rc-el-icon-progress] {
+    font-family: sans-serif;
+    /* speak: none; */
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.rc-el-icon-progress-circle-success {
+    background-color: #67c23a;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    line-height: 16px;
+    text-align: center;
+}
+
+.rc-el-icon-progress-circle-success:before {
+    content: "✓";
+    color: #ffffff;
+}
+
+.rc-el-icon-progress-circle-exception {
+    background-color: #f56c6c;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    font-size: 1em;
+    line-height: 16px;
+    text-align: center;
+}
+
+.rc-el-icon-progress-circle-exception:before {
+    content: "×";
+    color: #ffffff;
+}
