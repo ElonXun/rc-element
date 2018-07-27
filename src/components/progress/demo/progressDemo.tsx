@@ -17,12 +17,19 @@ class TagDemo extends React.Component<{}, {}> {
         return (
             <div className="App">
                 <div style={{ width: '500px' }}>
+                    <p>线性进度条</p>
                     <Progress />
-                    <Progress percentage={0} />
-                    <Progress percentage={70} />
+                    <Progress percentage={95.567} />
+                    <Progress percentage={70} status="active" />
                     <Progress percentage={80} color="#8e71c7" />
+                    <Progress percentage={80} status="success" showInfo={false} />
                     <Progress percentage={100} status="success" />
                     <Progress percentage={50} status="exception" />
+                </div>
+                <br />
+                <div style={{ width: '500px' }}>
+                    <p>圆形进度条</p>
+                    <Progress type={"circle"} percentage={0} />
                 </div>
             </div>
         );
