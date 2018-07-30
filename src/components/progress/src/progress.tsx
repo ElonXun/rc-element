@@ -45,20 +45,7 @@ export default class Tag extends React.Component<IProgressProps, {}> {
     }
     constructor(props: IProgressProps) {
         super(props);
-        this.state = {
-            // closing: false
-        }
     }
-
-    // public isPresetType(type?: string): boolean {
-    //     if (!type) { return false };
-    //     return /(success|info|warning|danger)/gi.test(type)
-    // }
-
-    // public isPresetSize(size?: string): boolean {
-    //     if (!size) { return false };
-    //     return /(medium|small|mini)/gi.test(size)
-    // }
 
     public relativeStrokeWidth(strokeWidth: number, width: number): string {
         return (strokeWidth / width * 100).toFixed(1);
@@ -73,6 +60,9 @@ export default class Tag extends React.Component<IProgressProps, {}> {
         const statusIconClassNames = classNames('rc-el-icon-progress',
             { [`rc-el-icon-progress-circle-${progressStatus}`]: progressStatus === 'success' || progressStatus === 'exception' }
         );
+        const progressTextClassNames = classNames('rc-el-progress-text', {
+            [`rc-el-progress-text-${type}`]: type === 'circle'
+        })
         if (showInfo) {
             let text;
             if (progressStatus !== 'success' && progressStatus !== 'exception') {
@@ -82,7 +72,7 @@ export default class Tag extends React.Component<IProgressProps, {}> {
             } else if (progressStatus === 'exception') {
                 text = <i className={statusIconClassNames} />
             }
-            progressInfo = <span className={`rc-el-progress-text`}>{text}</span>;
+            progressInfo = <span className={progressTextClassNames}>{text}</span>;
         }
         if (type === 'line') {
             const percentStyle = {
@@ -109,22 +99,44 @@ export default class Tag extends React.Component<IProgressProps, {}> {
                 height: `${circleWidth}px`,
                 width: `${circleWidth}px`,
             }
+
+            const perimeter = 2 * Math.PI * (50 - parseFloat(relativeStrokeWidth) / 2);
+            const circlePathStyle = {
+                strokeDasharray: `${perimeter}px,${perimeter}px`,
+                strokeDashoffset: (1 - (percentage || 0) / 100) * perimeter + 'px',
+                transition: 'stroke-dashoffset 0.6s ease 0s, stroke 0.6s ease'
+            }
+            let strokeColor;
+            if (progressStatus !== 'success' && progressStatus !== 'exception') {
+                strokeColor = color || '#409eff';
+            } else if (progressStatus === 'success') {
+                strokeColor = color || '#67c23a';
+            } else if (progressStatus === 'exception') {
+                strokeColor = color || '#f56c6c';
+            }
+
             progress = (
-                <div style={circleStyle}>
+                <div style={circleStyle} className="rc-el-progress-circle-wrapper">
                     <svg viewBox="0 0 100 100">
-                        <path className="el-progress-circle__track"
-                            d={trackPath} stroke="#e5e9f2"
+                        <path className="rc-el-progress-circle-track"
+                            d={trackPath} stroke="#f5f5f5"
                             strokeWidth={relativeStrokeWidth}
                             fill="none" />
-                        {/* <path class="el-progress-circle__path" :d="trackPath" stroke-linecap="round" :stroke="stroke" :stroke-width="relativeStrokeWidth" fill="none" : style="circlePathStyle"></path> */}
+                        <path className="rc-el-progress-circle-path"
+                            d={trackPath}
+                            strokeLinecap="round"
+                            stroke={strokeColor}
+                            strokeWidth={relativeStrokeWidth}
+                            fill="none"
+                            style={circlePathStyle} />
                     </svg>
+                    {progressInfo}
                 </div>
             );
         }
 
         const classString = classNames('rc-el-progress', {
             [`rc-el-progress-${type === 'dashboard' && 'circle' || type}`]: true,
-            // [`${prefixCls}-${type === 'dashboard' && 'circle' || type}`]: true,
             [`rc-el-progress-${progressStatus}`]: !!progressStatus,
             [`rc-el-progress-show-info`]: showInfo,
             // [`${prefixCls}-${size}`]: size,

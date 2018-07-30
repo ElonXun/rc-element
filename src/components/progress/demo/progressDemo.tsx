@@ -22,6 +22,7 @@ class TagDemo extends React.Component<{}, {}> {
                     <Progress percentage={95.567} />
                     <Progress percentage={70} status="active" />
                     <Progress percentage={80} color="#8e71c7" />
+                    <Progress percentage={80} status="success" />
                     <Progress percentage={80} status="success" showInfo={false} />
                     <Progress percentage={100} status="success" />
                     <Progress percentage={50} status="exception" />
@@ -30,6 +31,10 @@ class TagDemo extends React.Component<{}, {}> {
                 <div style={{ width: '500px' }}>
                     <p>圆形进度条</p>
                     <Progress type={"circle"} percentage={0} />
+                    <Progress type={"circle"} percentage={30} />
+                    <Progress type={"circle"} percentage={80} status="success" />
+                    <Progress type={"circle"} percentage={80} status="exception" />
+                    <Progress type={"circle"} percentage={100} />
                 </div>
             </div>
         );

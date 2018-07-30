@@ -19,6 +19,10 @@ div.rc-el-progress-line {
     display: inline-block;
 }
 
+.rc-el-progress-circle-wrapper {
+    position: relative;
+}
+
 .rc-el-progress-line {
     width: 100%;
     font-size: 14px;
@@ -67,6 +71,16 @@ div.rc-el-progress-line {
     line-height: 1;
 }
 
+.rc-el-progress-text-circle {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    transform: translateY(-50%);
+}
+
 [class*=" rc-el-icon-progress"],
 [class^=rc-el-icon-progress] {
     font-family: sans-serif;
@@ -110,6 +124,34 @@ div.rc-el-progress-line {
 .rc-el-icon-progress-circle-exception:before {
     content: "×";
     color: #ffffff;
+}
+
+.rc-el-progress-text-circle .rc-el-icon-progress-circle-success {
+    background-color: #ffffff;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    line-height: 16px;
+    text-align: center;
+}
+
+.rc-el-progress-text-circle .rc-el-icon-progress-circle-success:before {
+    color: #67c23a;
+}
+
+.rc-el-progress-text-circle .rc-el-icon-progress-circle-exception {
+    background-color: #ffffff;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    line-height: 16px;
+    text-align: center;
+}
+
+.rc-el-progress-text-circle .rc-el-icon-progress-circle-exception:before {
+    color: #f56c6c;
 }
 
 .rc-el-progress-success .rc-el-progress-bg {
