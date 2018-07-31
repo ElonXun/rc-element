@@ -1,8 +1,5 @@
 import classNames from 'classnames';
 import * as React from 'react';
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-// import Animate from 'rc-animate';
-// import PropTypes from 'prop-types';
 import './progress.css';
 
 export type ProgressType = 'line' | 'circle' | 'dashboard';
@@ -10,16 +7,15 @@ export type ProgressType = 'line' | 'circle' | 'dashboard';
 export type ProgressSize = 'default' | 'small';
 
 export interface IProgressProps {
+    textInside?: boolean;
     type?: ProgressType;
-    size?: ProgressSize;
+    // size?: ProgressSize;
     strokeWidth?: number;
     showInfo?: boolean;
     percentage?: number;
     status?: 'success' | 'active' | 'exception';
     color?: string;
     circleWidth?: number;
-    style?: React.CSSProperties;
-    tagKey?: string;
 }
 
 export interface ITagStates {
@@ -41,6 +37,7 @@ export default class Tag extends React.Component<IProgressProps, {}> {
         percentage: 0,
         showInfo: true,
         strokeWidth: 8,  // 进度条高度
+        textInside: false, // 百分百内显
         type: 'line' as ProgressType,
     }
     constructor(props: IProgressProps) {
@@ -52,9 +49,10 @@ export default class Tag extends React.Component<IProgressProps, {}> {
     }
 
     public render() {
-        const { type, showInfo, percentage, color, status, strokeWidth, circleWidth } = this.props;
+        const { type, showInfo, percentage, color, status, strokeWidth, circleWidth, textInside } = this.props;
         let progress;
         let progressInfo;
+        const insideProgressInfo = textInside && (type === 'line');
         const textFormatter = (percentNumber: number) => (`${percentNumber}%`);
         const progressStatus = percentage && percentage >= 100 ? 'success' : status;
         const statusIconClassNames = classNames('rc-el-icon-progress',
@@ -77,18 +75,20 @@ export default class Tag extends React.Component<IProgressProps, {}> {
         if (type === 'line') {
             const percentStyle = {
                 background: color,
-                height: `${strokeWidth}px`,
+                height: `${insideProgressInfo ? 18 : strokeWidth}px`,
                 width: `${validProgress(percentage)}%`,
             };
             progress = (
                 <div>
                     <div className={`rc-el-progress-outer`}>
                         <div className={`rc-el-progress-inner`}>
-                            <div className={`rc-el-progress-bg`} style={percentStyle} />
+                            <div className={`rc-el-progress-bg`} style={percentStyle}>
+                                {insideProgressInfo ? progressInfo : null}
+                            </div>
                             {/* {successSegment} */}
                         </div>
                     </div>
-                    {progressInfo}
+                    {insideProgressInfo ? null : progressInfo}
                 </div>
             );
         } else if (type === 'circle') {
@@ -103,7 +103,7 @@ export default class Tag extends React.Component<IProgressProps, {}> {
             const perimeter = 2 * Math.PI * (50 - parseFloat(relativeStrokeWidth) / 2);
             const circlePathStyle = {
                 strokeDasharray: `${perimeter}px,${perimeter}px`,
-                strokeDashoffset: (1 - (percentage || 0) / 100) * perimeter + 'px',
+                strokeDashoffset: (1 - (validProgress(percentage) || 0) / 100) * perimeter + 'px',
                 transition: 'stroke-dashoffset 0.6s ease 0s, stroke 0.6s ease'
             }
             let strokeColor;
@@ -139,7 +139,7 @@ export default class Tag extends React.Component<IProgressProps, {}> {
             [`rc-el-progress-${type === 'dashboard' && 'circle' || type}`]: true,
             [`rc-el-progress-${progressStatus}`]: !!progressStatus,
             [`rc-el-progress-show-info`]: showInfo,
-            // [`${prefixCls}-${size}`]: size,
+            [`rc-el-progress-text-inside`]: insideProgressInfo,
         });
 
         return (
