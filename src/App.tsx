@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ProgressDemo from '../src/components/progress/demo/progressDemo';
+import LoadingDemo from '../src/components/loading/demo/loadingDemo';
 import './App.css';
 
 export interface IAppState {
@@ -16,7 +16,7 @@ class App extends React.Component<{}, IAppState> {
 
   public render() {
     return (
-      <ProgressDemo />
+      <LoadingDemo />
     );
   }
 }
