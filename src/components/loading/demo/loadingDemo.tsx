@@ -28,12 +28,16 @@ class LoadingDemo extends React.Component<{}, IDemoState> {
                     <Loading spinning={this.state.spinning} type={"dynamicEllipsis"}>
                         <span>sadasdasdasddasdasasdasdasdasdasdasdasdasdasdasdasddasdasdasdasdasdasd<br />asdasdasdasdasdsadasdadsdassssssssssssssssssssssssssssssssssssssssssssss</span>
                     </Loading>
-                    <div style={{margin: '16px 0'}} />
+                    <div style={{ margin: '16px 0' }} />
                     <Loading spinning={this.state.spinning} type={"ellipsis"} >
                         <span>sadasdasdasddasdasasdasdasdasdasdasdasdasdasdasdasddasdasdasdasdasdasd<br />asdasdasdasdasdsadasdadsdassssssssssssssssssssssssssssssssssssssssssssss</span>
                     </Loading>
                     <div style={{ margin: '16px 0' }} />
                     <Loading spinning={this.state.spinning} type={"fence"} >
+                        <span>sadasdasdasddasdasasdasdasdasdasdasdasdasdasdasdasddasdasdasdasdasdasd<br />asdasdasdasdasdsadasdadsdassssssssssssssssssssssssssssssssssssssssssssss</span>
+                    </Loading>
+                    <div style={{ margin: '16px 0' }} />
+                    <Loading spinning={this.state.spinning} type={"circle"} >
                         <span>sadasdasdasddasdasasdasdasdasdasdasdasdasdasdasdasddasdasdasdasdasdasd<br />asdasdasdasdasdsadasdadsdassssssssssssssssssssssssssssssssssssssssssssss</span>
                     </Loading>
                     <span onClick={this.onLoadingClick}>点击</span>
