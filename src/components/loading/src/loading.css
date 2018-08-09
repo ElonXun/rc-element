@@ -1,9 +1,9 @@
-.rc-spinning-loading-wrap {
+.rc-el-spinning-loading-wrap {
     position: relative;
     display: inline-block;
 }
 
-.rc-spinning-loading {
+.rc-el-spinning-loading {
     width: 20px;
     display: flex;
     position: absolute;
@@ -17,14 +17,20 @@
 }
 
 /*  type circle css */
-.rc-spinning-circle-circular {
-    height: 42px;
-    width: 42px;
+
+.rc-el-spinning-circle {
+    width: 30px;
+    height: 30px;
+}
+
+.rc-el-spinning-circle-circular {
+    height: 30px;
+    width: 30px;
     -webkit-animation: loading-rotate 2s linear infinite;
     animation: loading-rotate 2s linear infinite
 }
 
-.rc-spinning-circle-path {
+.rc-el-spinning-circle-path {
     animation: loading-dash 1.5s ease-in-out infinite;
     stroke-dasharray: 90, 150;
     stroke-dashoffset: 0;
@@ -59,7 +65,7 @@
 
 /*  type fence css */
 
-.rc-spinning-fence span {
+.rc-el-spinning-fence span {
     display: inline-block;
     width: 2px;
     height: 8px;
@@ -81,19 +87,19 @@
     }
 }
 
-.rc-spinning-fence span:nth-child(2) {
+.rc-el-spinning-fence span:nth-child(2) {
     -webkit-animation-delay: 0.2s;
 }
 
-.rc-spinning-fence span:nth-child(3) {
+.rc-el-spinning-fence span:nth-child(3) {
     -webkit-animation-delay: 0.4s;
 }
 
-.rc-spinning-fence span:nth-child(4) {
+.rc-el-spinning-fence span:nth-child(4) {
     -webkit-animation-delay: 0.6s;
 }
 
-.rc-spinning-fence span:nth-child(5) {
+.rc-el-spinning-fence span:nth-child(5) {
     -webkit-animation-delay: 0.8s;
 }
 
@@ -101,11 +107,11 @@
 
 /* type ellipsis css */
 
-.rc-spinning-ellipsis {
+.rc-el-spinning-ellipsis {
     width: 60px;
 }
 
-.rc-spinning-ellipsis span {
+.rc-el-spinning-ellipsis span {
     display: inline-block;
     width: 8px;
     height: 8px;
@@ -124,19 +130,19 @@
     }
 }
 
-.rc-spinning-ellipsis span:nth-child(2) {
+.rc-el-spinning-ellipsis span:nth-child(2) {
     -webkit-animation-delay: 0.2s;
 }
 
-.rc-spinning-ellipsis span:nth-child(3) {
+.rc-el-spinning-ellipsis span:nth-child(3) {
     -webkit-animation-delay: 0.4s;
 }
 
-.rc-spinning-ellipsis span:nth-child(4) {
+.rc-el-spinning-ellipsis span:nth-child(4) {
     -webkit-animation-delay: 0.6s;
 }
 
-.rc-spinning-ellipsis span:nth-child(5) {
+.rc-el-spinning-ellipsis span:nth-child(5) {
     -webkit-animation-delay: 0.8s;
 }
 
@@ -144,11 +150,11 @@
 
 /* type dynamic-ellipsis css */
 
-.rc-spinning-dynamic-ellipsis {
+.rc-el-spinning-dynamic-ellipsis {
     width: 60px;
 }
 
-.rc-spinning-dynamic-ellipsis span {
+.rc-el-spinning-dynamic-ellipsis span {
     display: inline-block;
     width: 8px;
     height: 8px;
@@ -168,25 +174,25 @@
     }
 }
 
-.rc-spinning-dynamic-ellipsis span:nth-child(2) {
+.rc-el-spinning-dynamic-ellipsis span:nth-child(2) {
     -webkit-animation-delay: 0.2s;
 }
 
-.rc-spinning-dynamic-ellipsis span:nth-child(3) {
+.rc-el-spinning-dynamic-ellipsis span:nth-child(3) {
     -webkit-animation-delay: 0.4s;
 }
 
-.rc-spinning-dynamic-ellipsis span:nth-child(4) {
+.rc-el-spinning-dynamic-ellipsis span:nth-child(4) {
     -webkit-animation-delay: 0.6s;
 }
 
-.rc-spinning-dynamic-ellipsis span:nth-child(5) {
+.rc-el-spinning-dynamic-ellipsis span:nth-child(5) {
     -webkit-animation-delay: 0.8s;
 }
 
 /* type dynamic-ellipsis css end */
 
-.rc-spinning-item-container div.rc-spinning-item-children {
+.rc-el-spinning-item-container div.rc-el-spinning-item-children {
     /* overflow: hidden; */
     opacity: 0.7;
     -webkit-filter: blur(0.5px);
@@ -195,7 +201,7 @@
     transform: translateZ(0);
 }
 
-.rc-spinning-item-container div.rc-spinning-item-children::after {
+.rc-el-spinning-item-container div.rc-el-spinning-item-children::after {
     content: '';
     position: absolute;
     left: 0;
