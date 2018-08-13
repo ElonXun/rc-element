@@ -11,15 +11,7 @@ export interface ILoadingProps {
     spinning?: boolean;
     type?: LoadingType;
     style?: React.CSSProperties;
-    size?: string;
-    /** 关闭时的回调 */
-    onClose?: (arg1?: string) => void;
-    tagKey?: string;
 }
-
-// export interface ILoadingStates {
-//     closing: boolean;
-// }
 
 export default class Tag extends React.Component<ILoadingProps, {}> {
     public static defaultProps = {
@@ -28,7 +20,8 @@ export default class Tag extends React.Component<ILoadingProps, {}> {
     constructor(props: ILoadingProps) {
         super(props);
         this.state = {
-            // closing: false
+            spinning: false,
+            type: 'ellipsis',
         }
     }
 
@@ -56,13 +49,18 @@ export default class Tag extends React.Component<ILoadingProps, {}> {
                     <span />
                     <span />
                 </span>)
+        const spinningLoadingWrapClassNames = classNames('rc-el-spinning-loading-wrap',
+            {
+                'rc-el-spinning-loading-default': !this.props.children,
+            }
+        )
         return (
             <Animate component="div"
-                className={'rc-el-spinning-loading-wrap'}
+                className={spinningLoadingWrapClassNames}
                 showProp='data-show'
                 transitionName="fade" >
                 <div className={spinning ? 'rc-el-spinning-item-container' : ''} key="container">
-                    <div className={"rc-el-spinning-item-children"}>{this.props.children}</div>
+                    <div className={"rc-el-spinning-item-children"}>{this.props.children || <span>&nbsp;</span>}</div>
                     <div data-show={spinning} style={{ display: spinning ? 'block' : 'none' }} key="loading">{spinIndicator}</div>
                 </div>
             </Animate>

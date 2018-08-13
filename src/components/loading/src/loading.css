@@ -3,6 +3,10 @@
     display: inline-block;
 }
 
+.rc-el-spinning-loading-default {
+    width: 100%;
+}
+
 .rc-el-spinning-loading {
     width: 20px;
     display: flex;
