@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LoadingDemo from '../src/components/loading/demo/loadingDemo';
+import CarouselDemo from '../src/components/carousel/demo/carouselDemo';
 import './App.css';
 
 export interface IAppState {
@@ -16,7 +16,7 @@ class App extends React.Component<{}, IAppState> {
 
   public render() {
     return (
-      <LoadingDemo />
+      <CarouselDemo />
     );
   }
 }
