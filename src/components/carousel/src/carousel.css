@@ -63,6 +63,10 @@
     cursor: pointer;
 }
 
+.rc-el-carousel-indicator:hover .rc-el-carousel-button {
+    opacity: .72;
+}
+
 .rc-el-carousel-button {
     display: block;
     opacity: .48;
