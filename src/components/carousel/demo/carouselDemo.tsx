@@ -4,14 +4,16 @@ import Carousel from '../src/carousel';
 export interface ICarouselDemoStates {
     auto: boolean;
     content: string;
+    defaultArray: string[];
 }
 class CarouselDemo extends React.Component<{}, ICarouselDemoStates> {
 
     constructor(props: object) {
         super(props);
         this.state = {
-            auto: true,
+            auto: false,
             content: '1',
+            defaultArray: ['1', '2', '3', '4'],
         }
     }
 
@@ -24,23 +26,26 @@ class CarouselDemo extends React.Component<{}, ICarouselDemoStates> {
     }
 
     public handleContent = () => {
-        const content = this.state.content + new Date().getSeconds();
+        const arr = this.state.defaultArray.map((item) => {
+            return item + new Date().getSeconds();
+        });
         this.setState({
-            content
+            defaultArray: arr,
         });
     }
 
     public render() {
         return (
             <div className="App">
-                <div style={{ width: '500px' }}>
-                    <Carousel width={350} autoplay={this.state.auto}>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>4</h3></div>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>{this.state.content}</h3></div>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>2</h3></div>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>3</h3></div>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>4</h3></div>
-                        <div style={{ backgroundColor: '#ccc' }}><h3>1</h3></div>
+                <div style={{ width: '400px' }}>
+                    <Carousel autoplay={this.state.auto}>
+                        {
+                            this.state.defaultArray.map((item, index) => {
+                                return (
+                                    <div style={{ backgroundColor: '#ccc' }} key={index}><h3>{item}</h3></div>
+                                );
+                            })
+                        }
                     </Carousel>
                     <button onClick={this.handlerAutoPlay}>切换auto</button>
                     <button onClick={this.handleContent}>切换内容</button>

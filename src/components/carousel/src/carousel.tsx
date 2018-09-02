@@ -18,6 +18,7 @@ export interface ICarouselProps {
 export interface ICarouselStates {
     distance: number;
     solts: boolean[];
+
 }
 
 export default class Carousel extends React.Component<ICarouselProps, ICarouselStates> {
@@ -37,10 +38,12 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     };
     private timer: any;
     private children: any;
+    private childrenLength: number;
+    private carouselWidth: number;
     constructor(props: ICarouselProps) {
         super(props);
         this.state = {
-            distance: -350,
+            distance: 0,
             solts: [true, false, false, false],
         }
     }
@@ -60,17 +63,17 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
 
     public playSlides = (): void => {
         let { distance } = this.state;
-        const base = 350;
+        const base = this.carouselWidth;
         distance = distance - base;
 
-        if (distance === -base * 5) {
+        if (distance === -base * (this.childrenLength + 1)) {
             distance = -base;
         }
         if (distance === 0) {
-            distance = -base * 4;
+            distance = -base * this.childrenLength;
         }
 
-        const arr = new Array(4).fill(false);
+        const arr = new Array(this.childrenLength).fill(false);
         const current = distance / base * (-1);
         arr[current - 1] = true;
         this.setState({
@@ -80,23 +83,36 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     }
 
     public componentWillMount() {
-        this.buildChildren();
+        // this.buildChildren(this.props.children);
     }
 
     public componentDidMount() {
-        // var component = this.hello;
-        // const children = React.Children.map(this.props.children, (child: React.ReactElement<{}>) => {
-        //     console.log(child.type.toString);    
-        //     return child;
-        // })
-        // console.log(children.length);
+        let width;
+        if (this.props.width && this.props.width > 0) {
+            width = this.props.width;
+        } else {
+            width = this.carouselElement.clientWidth;
+        }
+        this.buildChildren(this.props.children, width);
+        this.carouselWidth = width;
+        this.setState({
+            distance: -width,
+        });
         this.startTimer();
         console.log(this.carouselElement.clientWidth);
     }
 
+    public componentWillUpdate(nextProps: any, nextState: any) {
+        console.log('nextprops', nextProps.children, 'thisprops', this.props.children);
+        console.log(this.props === nextProps);
+        if (this.props !== nextProps) {
+            this.buildChildren(nextProps.children, this.carouselWidth);
+        }
+    }
+
     public componentDidUpdate(prevProps: any, prevState: any) {
         const { autoplay } = this.props;
-        console.log(this.props);
+        // console.log(this.props); 
         if (autoplay === false && this.timer) {
             this.pauseTimer();
         }
@@ -107,19 +123,19 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
 
     public toggleArrow = (type: string): void => {
         let { distance } = this.state;
-        const base = 350;
+        const base = this.carouselWidth;
         if (type === 'left') {
             distance = distance + base;
         } else {
             distance = distance - base;
         }
-        if (distance === -base * 5) {
+        if (distance === -base * (this.childrenLength + 1)) {
             distance = -base;
         }
         if (distance === 0) {
-            distance = -base * 4;
+            distance = -base * this.childrenLength;
         }
-        const arr = new Array(4).fill(false);
+        const arr = new Array(this.childrenLength).fill(false);
         const current = distance / base * (-1);
         arr[current - 1] = true;
         console.log(type);
@@ -130,18 +146,40 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     }
 
     public soltHandle = (index: number): void => {
-        const arr = new Array(4).fill(false);
+        const arr = new Array(this.childrenLength).fill(false);
         arr[index] = true;
-        const currentDistance = (index + 1) * (-350);
+        const currentDistance = (index + 1) * (-this.carouselWidth);
         this.setState({
             distance: currentDistance,
             solts: arr,
         });
     }
 
-    public buildChildren = (): void => {
-        const { width } = this.props;
-        this.children = React.Children.map(this.props.children, (child: React.ReactElement<any>, index) => {
+    /**
+     * child: React.ReactElement<{}> whats wrong?
+     * 
+     * https://stackoverflow.com/questions/42261783/how-to-assign-the-correct-typing-to-react-cloneelement-when-giving-properties-to
+     * 
+     * The problem is that the definition for ReactChild is this:
+     * type ReactText = string | number;
+     * type ReactChild = ReactElement<any> | ReactText;
+     * If you're sure that child is always a ReactElement then cast it:
+     * return React.cloneElement(child as React.ReactElement<any>, {
+     *     width: this.props.width,
+     *     height: this.props.height
+     * });
+     * Otherwise use the isValidElement type guard:
+     * if (React.isValidElement(child)) {
+     *     return React.cloneElement(child, {
+     *         width: this.props.width,
+     *         height: this.props.height
+     *     });
+     * }
+     */
+    public buildChildren = (children: React.ReactNode, width?: number): void => {
+        const result: Array<React.ReactElement<any>> = [];
+        const childrenLength = React.Children.count(children);
+        React.Children.forEach(children, (child: React.ReactElement<any>, index) => {
             const style = {
                 ...child.props.style,
                 display: 'inline-block',
@@ -151,72 +189,47 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
             if (width) {
                 style.width = width;
             }
-            // console.log(child.props.style);
-            return React.cloneElement(child, { style: { ...style }, key: index });
+            result.push(React.cloneElement(child, { style: { ...style }, key: index + 1 }));
         })
+        // console.log('before', result);
+        result.unshift(React.cloneElement(result[childrenLength - 1], { key: 0 }));
+        result.push(React.cloneElement(result[1], { key: childrenLength + 1 }));
+        // console.log('after',result);
+        this.children = result;
+        this.childrenLength = childrenLength;
     }
 
     public render() {
         const { distance, solts } = this.state;
         // const { width } = this.props;
-        const carouselStyle = {
-            transform: `translate(${distance}px, 0)`
+        const carouselContainerStyle = {
+            transform: `translate(${distance}px, 0)`,
+            width: `${this.carouselWidth * (this.childrenLength + 2)}px`
         }
-        /**
-         * child: React.ReactElement<{}> whats wrong?
-         * 
-         * https://stackoverflow.com/questions/42261783/how-to-assign-the-correct-typing-to-react-cloneelement-when-giving-properties-to
-         * 
-         * The problem is that the definition for ReactChild is this:
-         * type ReactText = string | number;
-         * type ReactChild = ReactElement<any> | ReactText;
-         * If you're sure that child is always a ReactElement then cast it:
-         * return React.cloneElement(child as React.ReactElement<any>, {
-         *     width: this.props.width,
-         *     height: this.props.height
-         * });
-         * Otherwise use the isValidElement type guard:
-         * if (React.isValidElement(child)) {
-         *     return React.cloneElement(child, {
-         *         width: this.props.width,
-         *         height: this.props.height
-         *     });
-         * }
-         */
-        // const children = 
-        // children.unshift(children[children.length]);
-        // children.push(children[1]);
-        // console.log(children,width);
+        const carouselStyle = {
+            width: `${this.carouselWidth}px`,
+        }
+        const indicators: Array<React.ReactElement<any>> = [];
+        for (let i = 0; i < this.childrenLength; i++) {
+            indicators.push(
+                <li className="rc-el-carousel-indicator" key={i}
+                    onClick={this.soltHandle.bind(this, i)}>
+                    <button style={{ opacity: solts[i] === true ? 1 : undefined }}
+                        className="rc-el-carousel-button" />
+                </li>
+            );
+        }
         return (
-            <div className="rc-el-carousel" ref={this.refHandlers.carousel}>
+            <div className="rc-el-carousel" ref={this.refHandlers.carousel} style={carouselStyle}>
                 <button className="rc-el-carousel-arrow rc-el-carousel-arrow-left"
                     onClick={this.toggleArrow.bind(this, 'left')}>{'‹'}</button>
                 <button className="rc-el-carousel-arrow rc-el-carousel-arrow-right"
                     onClick={this.toggleArrow.bind(this, 'right')}>{'›'}</button>
-                <div className="rc-el-carousel-container" style={carouselStyle}>
+                <div className="rc-el-carousel-container" style={carouselContainerStyle}>
                     {this.children}
                 </div>
                 <ul className="rc-el-carousel-indicators">
-                    <li className="rc-el-carousel-indicator"
-                        onClick={this.soltHandle.bind(this, 0)}>
-                        <button style={{ opacity: solts[0] === true ? 1 : undefined }}
-                            className="rc-el-carousel-button" />
-                    </li>
-                    <li className="rc-el-carousel-indicator"
-                        onClick={this.soltHandle.bind(this, 1)}>
-                        <button style={{ opacity: solts[1] === true ? 1 : undefined }}
-                            className="rc-el-carousel-button" />
-                    </li>
-                    <li className="rc-el-carousel-indicator"
-                        onClick={this.soltHandle.bind(this, 2)}>
-                        <button style={{ opacity: solts[2] === true ? 1 : undefined }}
-                            className="rc-el-carousel-button" />
-                    </li>
-                    <li className="rc-el-carousel-indicator"
-                        onClick={this.soltHandle.bind(this, 3)}>
-                        <button style={{ opacity: solts[3] === true ? 1 : undefined }}
-                            className="rc-el-carousel-button" />
-                    </li>
+                    {indicators}
                 </ul>
             </div>
         )

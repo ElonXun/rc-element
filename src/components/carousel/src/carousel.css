@@ -1,23 +1,30 @@
 .rc-el-carousel {
-    width: 350px;
+    width: 100%;
     overflow: hidden;
     display: inline-block;
     position: relative;
 }
 
-.rc-el-carousel:hover .rc-el-carousel-arrow {
-    display: inline-block;
+.rc-el-carousel:hover .rc-el-carousel-arrow-left {
+    left: 16px;
+    opacity: 1;
+}
+
+.rc-el-carousel:hover .rc-el-carousel-arrow-right {
+    opacity: 1;
+    right: 16px;
 }
 
 .rc-el-carousel-container {
     position: relative;
     height: 150px;
-    width: 2100px;
+    width: 2160px;
     display: inline-block;
 }
 
 .rc-el-carousel-arrow {
-    display: none;
+    display: inline-block;
+    opacity: 0;
     border: none;
     outline: none;
     padding: 0;
@@ -25,7 +32,7 @@
     height: 36px;
     width: 36px;
     cursor: pointer;
-    transition: .3s;
+    /* transition: display 10s ease .3s; */
     border-radius: 50%;
     background-color: rgba(31, 45, 61, .11);
     color: #fff;
