@@ -1,5 +1,6 @@
 // import classNames from 'classnames';
 import * as React from 'react';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './carousel.css';
 
 export type ProgressType = 'line' | 'circle' | 'dashboard';

@@ -6,13 +6,47 @@
 }
 
 .rc-el-carousel:hover .rc-el-carousel-arrow-left {
-    left: 16px;
     opacity: 1;
+    animation: leftShowAnimate 0.2s 1;
+}
+
+@keyframes leftShowAnimate {
+    0% {
+        left: 12px;
+        opacity: 0.3;
+    }
+
+    50% {
+        left: 14px;
+        opacity: 0.5;
+    }
+
+    100% {
+        left: 16px;
+        opacity: 1;
+    }
 }
 
 .rc-el-carousel:hover .rc-el-carousel-arrow-right {
     opacity: 1;
-    right: 16px;
+    animation: rightShowAnimate 0.2s 1;
+}
+
+@keyframes rightShowAnimate {
+    0% {
+        right: 12px;
+        opacity: 0.3;
+    }
+
+    50% {
+        right: 14px;
+        opacity: 0.5;
+    }
+
+    100% {
+        right: 16px;
+        opacity: 1;
+    }
 }
 
 .rc-el-carousel-container {
@@ -46,10 +80,48 @@
 
 .rc-el-carousel-arrow-left {
     left: 16px;
+    opacity: 0;
+    animation: leftLeaveAnimate 0.2s 1;
+}
+
+@keyframes leftLeaveAnimate {
+    0% {
+        left: 16px;
+        opacity: 1;
+    }
+
+    50% {
+        left: 14px;
+        opacity: 0.5;
+    }
+
+    100% {
+        left: 12px;
+        opacity: 0.3;
+    }
 }
 
 .rc-el-carousel-arrow-right {
     right: 16px;
+    opacity: 0;
+    animation: rightLeaveAnimate 0.2s 1;
+}
+
+@keyframes rightLeaveAnimate {
+    0% {
+        right: 16px;
+        opacity: 1;
+    }
+
+    50% {
+        right: 14px;
+        opacity: 0.5;
+    }
+
+    100% {
+        right: 12px;
+        opacity: 0.3;
+    }
 }
 
 .rc-el-carousel-indicators {
