@@ -5,11 +5,6 @@
     position: relative;
 }
 
-.rc-el-carousel:hover .rc-el-carousel-arrow-left {
-    opacity: 1;
-    animation: leftShowAnimate 0.2s 1;
-}
-
 @keyframes leftShowAnimate {
     0% {
         left: 12px;
@@ -25,11 +20,6 @@
         left: 16px;
         opacity: 1;
     }
-}
-
-.rc-el-carousel:hover .rc-el-carousel-arrow-right {
-    opacity: 1;
-    animation: rightShowAnimate 0.2s 1;
 }
 
 @keyframes rightShowAnimate {
@@ -56,7 +46,7 @@
     display: inline-block;
 }
 
-.rc-el-carousel-arrow {
+.rc-el-carousel-arrow-left-default {
     display: inline-block;
     opacity: 0;
     border: none;
@@ -66,7 +56,6 @@
     height: 36px;
     width: 36px;
     cursor: pointer;
-    /* transition: display 10s ease .3s; */
     border-radius: 50%;
     background-color: rgba(31, 45, 61, .11);
     color: #fff;
@@ -76,12 +65,49 @@
     transform: translateY(-50%);
     text-align: center;
     font-size: 16px;
+    left: 16px;
 }
 
-.rc-el-carousel-arrow-left {
-    left: 16px;
+.rc-el-carousel-arrow-left-enter {
+    opacity: 1;
+    animation: leftShowAnimate 0.2s 1;
+}
+
+.rc-el-carousel-arrow-left-leave {
     opacity: 0;
     animation: leftLeaveAnimate 0.2s 1;
+}
+
+.rc-el-carousel-arrow-right-default {
+    display: inline-block;
+    opacity: 0;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: rgba(31, 45, 61, .11);
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    transform: translateY(-50%);
+    text-align: center;
+    font-size: 16px;
+    right: 16px;
+}
+
+.rc-el-carousel-arrow-right-enter {
+    opacity: 1;
+    animation: rightShowAnimate 0.2s 1;
+}
+
+.rc-el-carousel-arrow-right-leave {
+    opacity: 0;
+    animation: rightLeaveAnimate 0.2s 1;
 }
 
 @keyframes leftLeaveAnimate {
@@ -99,12 +125,6 @@
         left: 12px;
         opacity: 0.3;
     }
-}
-
-.rc-el-carousel-arrow-right {
-    right: 16px;
-    opacity: 0;
-    animation: rightLeaveAnimate 0.2s 1;
 }
 
 @keyframes rightLeaveAnimate {

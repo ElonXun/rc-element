@@ -1,4 +1,4 @@
-// import classNames from 'classnames';
+import classNames from 'classnames';
 import * as React from 'react';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './carousel.css';
@@ -19,7 +19,7 @@ export interface ICarouselProps {
 export interface ICarouselStates {
     distance: number;
     solts: boolean[];
-
+    carouselActive: boolean | null;
 }
 
 export default class Carousel extends React.Component<ICarouselProps, ICarouselStates> {
@@ -44,6 +44,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     constructor(props: ICarouselProps) {
         super(props);
         this.state = {
+            carouselActive: null,
             distance: 0,
             solts: [true, false, false, false],
         }
@@ -200,8 +201,20 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         this.childrenLength = childrenLength;
     }
 
+    public onCarouselEnter = (event: React.MouseEvent<HTMLElement>): void => {
+        this.setState({
+            carouselActive: true,
+        })
+    }
+
+    public onCarouselLeave = (event: React.MouseEvent<HTMLElement>): void => {
+        this.setState({
+            carouselActive: false,
+        })
+    }
+
     public render() {
-        const { distance, solts } = this.state;
+        const { distance, solts, carouselActive } = this.state;
         // const { width } = this.props;
         const carouselContainerStyle = {
             transform: `translate(${distance}px, 0)`,
@@ -220,11 +233,24 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
                 </li>
             );
         }
+        const leftArrowClassName = classNames('rc-el-carousel-arrow-left-default', {
+            'rc-el-carousel-arrow-left-enter': carouselActive === true,
+            'rc-el-carousel-arrow-left-leave': carouselActive === false,
+        });
+
+        const rightArrowClassName = classNames('rc-el-carousel-arrow-right-default', {
+            'rc-el-carousel-arrow-right-enter': carouselActive === true,
+            'rc-el-carousel-arrow-right-leave': carouselActive === false,
+        });
         return (
-            <div className="rc-el-carousel" ref={this.refHandlers.carousel} style={carouselStyle}>
-                <button className="rc-el-carousel-arrow rc-el-carousel-arrow-left"
+            <div className="rc-el-carousel"
+                ref={this.refHandlers.carousel}
+                style={carouselStyle}
+                onMouseEnter={this.onCarouselEnter}
+                onMouseLeave={this.onCarouselLeave}>
+                <button className={leftArrowClassName}
                     onClick={this.toggleArrow.bind(this, 'left')}>{'‹'}</button>
-                <button className="rc-el-carousel-arrow rc-el-carousel-arrow-right"
+                <button className={rightArrowClassName}
                     onClick={this.toggleArrow.bind(this, 'right')}>{'›'}</button>
                 <div className="rc-el-carousel-container" style={carouselContainerStyle}>
                     {this.children}
