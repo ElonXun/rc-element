@@ -19,7 +19,8 @@ export interface ICarouselProps {
 export interface ICarouselStates {
     distance: number;
     solts: boolean[];
-    carouselActive: boolean | null;
+    carouselActive: boolean|null;
+    isCarouselAnimate: boolean; 
 }
 
 export default class Carousel extends React.Component<ICarouselProps, ICarouselStates> {
@@ -46,32 +47,35 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         this.state = {
             carouselActive: null,
             distance: 0,
+            isCarouselAnimate: true,
             solts: [true, false, false, false],
         }
     }
 
-    public startTimer = (): void => {
+    public startTimer = ():void => {
         const { interval = 0, autoplay } = this.props;
         if (interval <= 0 || !autoplay) {
-            return;
+            return;    
         }
         this.timer = setInterval(this.playSlides, interval);
     }
 
-    public pauseTimer = (): void => {
+    public pauseTimer = ():void => {
         clearInterval(this.timer);
         this.timer = null;
     }
 
-    public playSlides = (): void => {
+    public playSlides = ():void => {
         let { distance } = this.state;
         const base = this.carouselWidth;
         distance = distance - base;
-
+        // isCarouselAnimate = true;
         if (distance === -base * (this.childrenLength + 1)) {
+            // isCarouselAnimate = false;
             distance = -base;
         }
         if (distance === 0) {
+            // isCarouselAnimate = false;
             distance = -base * this.childrenLength;
         }
 
@@ -88,7 +92,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         // this.buildChildren(this.props.children);
     }
 
-    public componentDidMount() {
+    public componentDidMount(){
         let width;
         if (this.props.width && this.props.width > 0) {
             width = this.props.width;
@@ -105,17 +109,17 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     }
 
     public componentWillUpdate(nextProps: any, nextState: any) {
-        console.log('nextprops', nextProps.children, 'thisprops', this.props.children);
+        console.log('nextprops',nextProps.children, 'thisprops', this.props.children);
         console.log(this.props === nextProps);
         if (this.props !== nextProps) {
             this.buildChildren(nextProps.children, this.carouselWidth);
         }
     }
 
-    public componentDidUpdate(prevProps: any, prevState: any) {
+    public componentDidUpdate(prevProps: any, prevState: any){
         const { autoplay } = this.props;
         // console.log(this.props); 
-        if (autoplay === false && this.timer) {
+        if (autoplay === false && this.timer){
             this.pauseTimer();
         }
         if (autoplay === true && !this.timer) {
@@ -123,23 +127,26 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         }
     }
 
-    public toggleArrow = (type: string): void => {
+    public toggleArrow = (type: string):void  => {
         let { distance } = this.state;
         const base = this.carouselWidth;
+        // isCarouselAnimate = true;
         if (type === 'left') {
             distance = distance + base;
         } else {
             distance = distance - base;
         }
         if (distance === -base * (this.childrenLength + 1)) {
+            // isCarouselAnimate = false;
             distance = -base;
         }
         if (distance === 0) {
+            // isCarouselAnimate = false;
             distance = -base * this.childrenLength;
         }
         const arr = new Array(this.childrenLength).fill(false);
         const current = distance / base * (-1);
-        arr[current - 1] = true;
+        arr[current-1] = true;
         console.log(type);
         this.setState({
             distance,
@@ -147,7 +154,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         });
     }
 
-    public soltHandle = (index: number): void => {
+    public soltHandle = (index: number):void => {
         const arr = new Array(this.childrenLength).fill(false);
         arr[index] = true;
         const currentDistance = (index + 1) * (-this.carouselWidth);
@@ -178,7 +185,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
      *     });
      * }
      */
-    public buildChildren = (children: React.ReactNode, width?: number): void => {
+    public buildChildren = (children: React.ReactNode, width?: number):void => {
         const result: Array<React.ReactElement<any>> = [];
         const childrenLength = React.Children.count(children);
         React.Children.forEach(children, (child: React.ReactElement<any>, index) => {
@@ -191,7 +198,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
             if (width) {
                 style.width = width;
             }
-            result.push(React.cloneElement(child, { style: { ...style }, key: index + 1 }));
+            result.push(React.cloneElement(child, { style: { ...style }, key: index + 1}));
         })
         // console.log('before', result);
         result.unshift(React.cloneElement(result[childrenLength - 1], { key: 0 }));
@@ -201,7 +208,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
         this.childrenLength = childrenLength;
     }
 
-    public onCarouselEnter = (event: React.MouseEvent<HTMLElement>): void => {
+    public onCarouselEnter = (event: React.MouseEvent<HTMLElement>):void => {
         this.setState({
             carouselActive: true,
         })
@@ -214,7 +221,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
     }
 
     public render() {
-        const { distance, solts, carouselActive } = this.state;
+        const { distance, solts, carouselActive, isCarouselAnimate } = this.state;
         // const { width } = this.props;
         const carouselContainerStyle = {
             transform: `translate(${distance}px, 0)`,
@@ -224,7 +231,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
             width: `${this.carouselWidth}px`,
         }
         const indicators: Array<React.ReactElement<any>> = [];
-        for (let i = 0; i < this.childrenLength; i++) {
+        for (let i =0;i <this.childrenLength; i++) {
             indicators.push(
                 <li className="rc-el-carousel-indicator" key={i}
                     onClick={this.soltHandle.bind(this, i)}>
@@ -233,7 +240,7 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
                 </li>
             );
         }
-        const leftArrowClassName = classNames('rc-el-carousel-arrow-left-default', {
+        const leftArrowClassName = classNames('rc-el-carousel-arrow-left-default',{
             'rc-el-carousel-arrow-left-enter': carouselActive === true,
             'rc-el-carousel-arrow-left-leave': carouselActive === false,
         });
@@ -242,17 +249,21 @@ export default class Carousel extends React.Component<ICarouselProps, ICarouselS
             'rc-el-carousel-arrow-right-enter': carouselActive === true,
             'rc-el-carousel-arrow-right-leave': carouselActive === false,
         });
+
+        const carouselContainerClassName = classNames('rc-el-carousel-container',{
+            'rc-el-carousel-container-animate': isCarouselAnimate === true,
+        });
         return (
             <div className="rc-el-carousel"
-                ref={this.refHandlers.carousel}
+                ref={this.refHandlers.carousel} 
                 style={carouselStyle}
                 onMouseEnter={this.onCarouselEnter}
                 onMouseLeave={this.onCarouselLeave}>
-                <button className={leftArrowClassName}
+                <button className={leftArrowClassName} 
                     onClick={this.toggleArrow.bind(this, 'left')}>{'‹'}</button>
                 <button className={rightArrowClassName}
                     onClick={this.toggleArrow.bind(this, 'right')}>{'›'}</button>
-                <div className="rc-el-carousel-container" style={carouselContainerStyle}>
+                <div className={carouselContainerClassName} style={carouselContainerStyle}>
                     {this.children}
                 </div>
                 <ul className="rc-el-carousel-indicators">

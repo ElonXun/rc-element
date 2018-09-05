@@ -46,6 +46,10 @@
     display: inline-block;
 }
 
+.rc-el-carousel-container-animate {
+    transition: transform 0.5s;
+}
+
 .rc-el-carousel-arrow-left-default {
     display: inline-block;
     opacity: 0;
